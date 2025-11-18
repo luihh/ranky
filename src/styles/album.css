@@ -53,8 +53,16 @@
 .bottom-buttons {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
   margin-top: auto;
+}
+
+#save-ranking {
+  width: 240px;
+  height: 2rem;
+  margin-top: 0.75rem;
 }
 
 #album-notes {
