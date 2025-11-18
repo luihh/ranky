@@ -203,7 +203,11 @@
   .left-column {
     height: auto;
     margin-bottom: 2rem;
-    padding: 0;
+    padding: 0 1rem;
+  }
+
+  .album-artist {
+    padding-top: 8px;
   }
 
   .bottom-buttons {
