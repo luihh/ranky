@@ -1,0 +1,67 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.album-list {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+.album-card {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  color: var(--accent-text);
+  text-decoration: none;
+}
+
+.album-cover {
+  width: 120px;
+  border-radius: 10px;
+}
+
+.album-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.album-title {
+  color: var(--accent);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.album-artist {
+  color: var(--accent-text);
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.album-date {
+  opacity: 0.55;
+  margin-top: 4px;
+  font-size: 0.8rem;
+}
+
+.album-rating {
+  margin-top: 4px;
+}
+
+.star {
+  color: var(--accent-border);
+  font-size: 1.2rem;
+}
+
+.star.filled {
+  color: var(--accent);
+}

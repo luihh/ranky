@@ -1,0 +1,91 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<style>
+  .settings-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  section {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border-radius: 12px;
+    background: var(--accent-soft);
+  }
+
+  h2 {
+    padding: 0.5rem;
+  }
+
+  button {
+    margin: 0.5rem;
+  }
+
+  .coming-soon {
+    background: none;
+    opacity: 0.75;
+  }
+
+  footer {
+    margin-top: auto;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+
+  footer a {
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<Layout title="Settings">
+  <div class="settings-wrapper">
+    <div class="container">
+      <h1 class="title">Settings</h1>
+
+      <section>
+        <div>
+          <h2>Data backup</h2>
+          <button id="export-btn">Export data</button>
+          <button id="import-btn">Import data</button>
+          <button id="reset-btn">Reset all data</button>
+        </div>
+      </section>
+
+      <section>
+        <div>
+          <h2>Theme</h2>
+          <button id="reset-theme">Reset theme</button>
+        </div>
+      </section>
+
+      <section class="coming-soon">
+        <p>More settings coming soon...</p>
+      </section>
+    </div>
+
+    <footer>
+      <p>
+        Made with ❤️ by <a
+          href="https://luihh.dev"
+          target="_blank"
+          >Luihh</a
+        >
+      </p>
+    </footer>
+  </div>
+
+  <script src="../scripts/settings.js"></script>
+</Layout>

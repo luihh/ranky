@@ -1,0 +1,33 @@
+---
+import '@/styles/navbar.css';
+
+import Settings from '@/components/icons/Settings.astro';
+---
+
+<nav class="navbar">
+  <a
+    href="/"
+    class="navbar-title"
+    >Ranky :)</a
+  >
+
+  <form
+    action="/search"
+    class="navbar-search"
+  >
+    <input
+      type="text"
+      name="q"
+      placeholder="Search an album or artist..."
+    />
+    <button type="submit">Search</button>
+  </form>
+
+  <a href="/settings">
+    <button
+      class="navbar-settings"
+      aria-label="Settings"
+      ><Settings /></button
+    >
+  </a>
+</nav>

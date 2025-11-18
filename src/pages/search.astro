@@ -1,0 +1,38 @@
+---
+import '@/styles/search.css';
+
+import Layout from '@/layouts/Layout.astro';
+import { searchAlbums } from '@/utils/deezer';
+
+const query = Astro.url.searchParams.get('q') || '';
+
+const data = query ? await searchAlbums(query) : [];
+---
+
+<Layout title={`Search - ${query}`}>
+  <div class="container">
+    <h1 class="title">Search results</h1>
+    <ul class="search-list">
+      {
+        data.map((album) => (
+          <li class="result-item">
+            <a
+              href={`/album/${album.id}`}
+              class="result-container"
+            >
+              <img
+                src={album.cover}
+                class="result-cover"
+              />
+
+              <div class="result-info">
+                <div class="result-album">{album.title}</div>
+                <div class="result-artist">{album.artist.name}</div>
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Layout>

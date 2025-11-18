@@ -1,5 +1,17 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
+
+import react from '@astrojs/react';
+
+import node from '@astrojs/node';
 
 // https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+  output: 'server',
+
+  integrations: [react()],
+
+  adapter: node({
+    mode: 'standalone',
+  }),
+});

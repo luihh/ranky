@@ -1,0 +1,133 @@
+---
+export const prerender = false;
+
+import '@/styles/album.css';
+import Layout from '@/layouts/Layout.astro';
+
+import ArrowBack from '@/components/icons/ArrowBack.astro';
+import Home from '@/components/icons/Home.astro';
+
+import { getAlbumInfo } from '@/utils/deezer';
+const { id } = Astro.params;
+
+const album = await getAlbumInfo(Number(id));
+---
+
+<Layout
+  title={`${album?.title} - ${album?.artist}`}
+  favicon={album?.cover}
+  navbar={false}
+>
+  {
+    album ? (
+      <>
+        <div class="nav">
+          <button
+            id="back-button"
+            aria-label="Back"
+            class="nav-button"
+          >
+            <ArrowBack />
+          </button>
+          <a href="/">
+            <button
+              id="home-button"
+              aria-label="Home"
+              class="nav-button"
+            >
+              <Home />
+            </button>
+          </a>
+        </div>
+
+        <div class="album-page-container">
+          <div class="left-column">
+            <div class="header">
+              <img
+                src={album.cover}
+                crossorigin="anonymous"
+                id="album-cover"
+              />
+              <h1 class="album-title">{album.title}</h1>
+              <h1 class="album-artist">{album.artist}</h1>
+
+              <div id="star-rating">
+                <span data-value="1">★</span>
+                <span data-value="2">★</span>
+                <span data-value="3">★</span>
+                <span data-value="4">★</span>
+                <span data-value="5">★</span>
+              </div>
+
+              <textarea
+                id="album-notes"
+                placeholder="Add your opinion or notes..."
+              />
+            </div>
+
+            <div class="bottom-buttons">
+              <button id="save-theme">Save theme</button>
+              <button id="reset-ranking">Reset ranking</button>
+            </div>
+          </div>
+
+          <div
+            id="root"
+            style="display: flex; gap: 2rem;"
+            data-album={album.title}
+            data-artist={album.artist}
+            data-id={Number(id)}
+          >
+            {/* RANKING */}
+            <div class="rank-column">
+              <h1 class="section-title">Ranking</h1>
+              <div id="ranking">
+                {(album.tracks as any[]).map((track, i) => (
+                  <div class="rank-row">
+                    <span class="rank-number">{i + 1}</span>
+                    <div class="slot">
+                      <div class="placeholder-box">
+                        <span class="track-name nowrap">{track.title}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* TRACKLIST */}
+            <div class="rank-column">
+              <h1 class="section-title">Tracks</h1>
+              <div id="tracklist">
+                {(album.tracks as any[]).map((track, i) => (
+                  <div class="rank-row">
+                    <div
+                      class="slot"
+                      id={`slot-${i}`}
+                    >
+                      <div
+                        class="track-box"
+                        draggable="true"
+                        id={`track-${i}`}
+                      >
+                        <span class="track-name nowrap">{track.title}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    ) : (
+      <h1>no track info found</h1>
+    )
+  }
+
+  <script src="../../scripts/back-button.js"></script>
+  <script src="../../scripts/drag.js"></script>
+  <script src="../../scripts/metadata.js"></script>
+  <script src="../../scripts/colorthief.js"></script>
+  <script src="../../scripts/save-theme.js"></script>
+</Layout>
