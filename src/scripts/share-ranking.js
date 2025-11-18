@@ -92,6 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const rankingClone = ranking.cloneNode(true);
     rankingClone.style.width = '100%';
+
+    rankingClone.querySelectorAll('.slot').forEach((slot) => {
+      slot.style.maxWidth = '320px';
+    });
+
     rightCol.appendChild(rankingClone);
 
     card.appendChild(leftCol);
