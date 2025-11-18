@@ -12,12 +12,10 @@
     "@astrojs/node": "^9.5.1",
     "@astrojs/react": "^4.4.2",
     "@fontsource-variable/inter": "^5.2.8",
-    "@solely/simple-fm": "^1.7.2",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "astro": "^5.15.7",
     "colorthief": "^2.6.0",
-    "musicbrainz-api": "^0.26.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "sortablejs": "^1.15.6"
