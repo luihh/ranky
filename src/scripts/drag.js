@@ -46,9 +46,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function handleDrop(slot) {
-    slot.addEventListener('dragover', (e) => e.preventDefault());
+    slot.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      slot.classList.add('drag-over');
+    });
+
+    slot.addEventListener('dragleave', () => {
+      slot.classList.remove('drag-over');
+    });
+
     slot.addEventListener('drop', (e) => {
       e.preventDefault();
+      slot.classList.remove('drag-over');
 
       const placeholder = slot.querySelector('.placeholder-box');
       if (!placeholder) return;
@@ -58,19 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!track) return;
 
       const originalSlot = track.parentElement;
-      if (originalSlot) {
-        const placeholder = document.createElement('div');
-        placeholder.className = 'placeholder-box';
-
-        const span = document.createElement('span');
-        span.className = 'track-name';
-        span.textContent =
-          track.querySelector('.track-name')?.textContent || '';
-        placeholder.appendChild(span);
-
-        originalSlot.innerHTML = '';
-        originalSlot.appendChild(placeholder);
-      }
+      if (originalSlot) restorePlaceholder(originalSlot, track);
 
       slot.innerHTML = '';
       slot.appendChild(track);
@@ -80,11 +77,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function restorePlaceholder(slot, track) {
+    slot.innerHTML = '';
+    const placeholder = document.createElement('div');
+    placeholder.className = 'placeholder-box';
+
+    const span = document.createElement('span');
+    span.className = 'track-name nowrap';
+    span.textContent = track.querySelector('.track-name')?.textContent || '';
+
+    placeholder.appendChild(span);
+    slot.appendChild(placeholder);
+  }
+
   function makeDraggable(el) {
     el.setAttribute('draggable', true);
-    el.addEventListener('dragstart', (e) =>
-      e.dataTransfer.setData('text/plain', el.id)
-    );
+    el.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', el.id);
+      el.classList.add('dragging');
+    });
+
+    el.addEventListener('dragend', (e) => {
+      el.classList.remove('dragging');
+    });
   }
 
   function saveRankingState() {

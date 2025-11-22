@@ -150,6 +150,10 @@
   background: var(--accent-soft);
 }
 
+.slot.drag-over {
+  outline: 2px dashed var(--accent);
+}
+
 .track-box,
 .placeholder-box {
   width: 100%;
@@ -169,6 +173,10 @@
   border: 1px solid var(--accent-border);
   cursor: grab;
   touch-action: none;
+}
+
+.track-box.dragging {
+  opacity: 0.5;
 }
 
 .placeholder-box {
