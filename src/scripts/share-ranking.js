@@ -92,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const rankingClone = ranking.cloneNode(true);
     rankingClone.style.width = '100%';
+    rankingClone.style.paddingBottom = '0px';
 
     rankingClone.querySelectorAll('.slot').forEach((slot) => {
       slot.style.maxWidth = '320px';
@@ -111,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const link = document.createElement('a');
-    link.download = 'ranking.png';
+    link.download = `${title.textContent} - ${artist.textContent} ranking.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
 
