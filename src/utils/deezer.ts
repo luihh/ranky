@@ -49,7 +49,9 @@ export async function searchAlbums(
     `${BASE_URL}/search/album?q=${encodeURIComponent(query)}`
   );
   const data = await res.json();
-  return data.data || [];
+  return (data.data || []).filter(
+    (item: DeezerAlbumSearchItem) => item.record_type !== 'single'
+  );
 }
 
 export async function getAlbumInfo(
