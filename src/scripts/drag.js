@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     slot.innerHTML = '';
     slot.appendChild(track);
-    makeDraggable(track);
   });
 
   function handleDrop(slot) {
@@ -59,21 +58,48 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       slot.classList.remove('drag-over');
 
-      const placeholder = slot.querySelector('.placeholder-box');
-      if (!placeholder) return;
-
       const trackID = e.dataTransfer.getData('text/plain');
       const track = document.getElementById(trackID);
       if (!track) return;
 
-      const originalSlot = track.parentElement;
-      if (originalSlot) restorePlaceholder(originalSlot, track);
+      const targetIndex = Array.from(rankingSlots).indexOf(slot);
 
-      slot.innerHTML = '';
-      slot.appendChild(track);
+      const placeholder = slot.querySelector('.placeholder-box');
+      if (placeholder) {
+        const originalSlot = track.parentElement;
+        if (originalSlot) restorePlaceholder(originalSlot, track);
 
-      makeDraggable(track);
+        slot.innerHTML = '';
+        slot.appendChild(track);
+
+        saveRankingState();
+        return;
+      }
+
+      autoArrange(track, targetIndex);
       saveRankingState();
+    });
+  }
+
+  function autoArrange(track, targetIndex) {
+    const slots = Array.from(rankingSlots);
+
+    const originalSlot = track.closest('.slot');
+    const originalIndex = slots.indexOf(originalSlot);
+    if (originalIndex === -1) return;
+
+    const trackBoxes = slots.map((slot) => slot.querySelector('.track-box'));
+    trackBoxes.splice(originalIndex, 1);
+    trackBoxes.splice(targetIndex, 0, track);
+    trackBoxes.forEach((trackbox, i) => {
+      const slot = slots[i];
+
+      if (trackbox) {
+        slot.innerHTML = '';
+        slot.appendChild(trackbox);
+      } else {
+        restorePlaceholder(slot, track);
+      }
     });
   }
 
@@ -92,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function makeDraggable(el) {
     el.setAttribute('draggable', true);
+
     el.addEventListener('dragstart', (e) => {
       e.dataTransfer.setData('text/plain', el.id);
       el.classList.add('dragging');
