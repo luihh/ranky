@@ -25,6 +25,20 @@ const { title, favicon, navbar = true } = Astro.props;
       content={Astro.generator}
     />
     <title>{title}</title>
+    <meta name="description" content="Ranky lets you rank album tracklist and export them as images to share with friends." />
+    <meta name="keywords" content="album ranking, tracklist ranking, music ranking, album tracks, rank albums, music lists" />
+    <meta name="robots" content="index, follow" />
+
+    <meta property="og:title" content="Ranky" />
+    <meta property="og:description" content="Create album tracklist rankings and export them as images to share with friends." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ranky.luihh.dev" />
+
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter.title" content="Ranky" />
+    <meta property="twitter:description" content="Create album tracklist rankings and export them as image to share with friends." />
+
+    <link rel="canonical" href="https://ranky.luihh.dev" />
 
     <script src="../scripts/theme-loader.js"></script>
   </head>
