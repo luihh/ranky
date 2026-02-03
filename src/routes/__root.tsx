@@ -17,6 +17,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     const description =
       'Create album tracklist rankings and export them as an image to share with friends!'
     const url = 'https://ranky.luihh.dev/'
+    const img = '/img/ranky-logo-rounded.png'
 
     return {
       meta: [
@@ -32,15 +33,16 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
         { name: 'og:title', content: title },
         { name: 'og:description', content: description },
-        // { name: 'og:image', content: img },
+        { name: 'og:image', content: img },
         { name: 'og:url', content: url },
 
         { name: 'twitter:title', content: title },
         { name: 'twitter:description', content: description },
-        // { name: 'twitter:image', content: img },
+        { name: 'twitter:image', content: img },
         { name: 'twitter:url', content: url }
       ],
       links: [
+        { rel: 'icon', href: img },
         { rel: 'canonical', href: 'https://ranky.luihh.dev' },
         {
           rel: 'stylesheet',
