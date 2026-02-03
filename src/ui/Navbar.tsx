@@ -1,5 +1,6 @@
-import { Settings } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
+import { Settings } from 'lucide-react'
+import { SiDiscord } from '@icons-pack/react-simple-icons'
 
 export default function Navbar() {
   return (
@@ -30,6 +31,12 @@ export default function Navbar() {
           Search
         </button>
       </form>
+
+      <a href="https://discord.gg/g5gZymxEyR" className="hidden md:block">
+        <button aria-label="Discord server">
+          <SiDiscord size={18} />
+        </button>
+      </a>
 
       <Link to="/settings" className="hidden md:block">
         <button aria-label="Settings">
