@@ -56,3 +56,7 @@ button {
     cursor: not-allowed;
   }
 }
+
+option {
+  color: #000;
+}
