@@ -27,8 +27,10 @@ export default function ScreenshotComponent({ album }: { album: Album }) {
     >
       <div className="flex flex-col min-w-80 w-80 h-full text-center items-center">
         <img src={album.cover} crossOrigin="anonymous" className="size-60 rounded-2xl mb-2" />
-        <h2 className="text-2xl font-bold text-balance">{album.title}</h2>
-        <h2 className="text-xl font-semibold text-balance opacity-80 mb-2">{album.artist.name}</h2>
+        <h2 className="text-2xl w-full font-bold text-balance">{album.title}</h2>
+        <h2 className="text-xl w-full font-semibold text-balance opacity-80 mb-2">
+          {album.artist.name}
+        </h2>
 
         <Rating albumId={album.id} />
 
