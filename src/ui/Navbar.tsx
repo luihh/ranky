@@ -10,11 +10,19 @@ export default function Navbar() {
           Ranky :)
         </Link>
 
-        <Link to="/settings" className="md:hidden">
-          <button aria-label="Settings">
-            <Settings size={18} />
-          </button>
-        </Link>
+        <div className="flex flex-row gap-3">
+          <a href="https://discord.gg/g5gZymxEyR" className="md:hidden" draggable={false}>
+            <button aria-label="Discord server">
+              <SiDiscord size={18} />
+            </button>
+          </a>
+
+          <Link to="/settings" className="md:hidden" draggable={false}>
+            <button aria-label="Settings">
+              <Settings size={18} />
+            </button>
+          </Link>
+        </div>
       </div>
 
       <form action="/search" className="flex w-full max-w-lg mx-auto">

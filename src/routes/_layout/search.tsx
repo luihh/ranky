@@ -76,11 +76,13 @@ function QueryComponent({ query }: { query: string }) {
                   to={'/artist/$artistId'}
                   params={{ artistId: String(artist.id) }}
                   className="flex gap-4"
+                  draggable={false}
                 >
                   <img
                     src={artist.picture_medium}
                     alt={`${artist.name}'s picture`}
                     className="size-28 rounded-full object-cover"
+                    draggable={false}
                   />
                   <div className="flex flex-col justify-center min-w-0 pr-8">
                     <span className="truncate text-xl font-semibold">{artist.name}</span>
@@ -105,11 +107,13 @@ function QueryComponent({ query }: { query: string }) {
                   to={'/album/$albumId'}
                   params={{ albumId: String(album.id) }}
                   className="flex gap-4"
+                  draggable={false}
                 >
                   <img
                     src={album.cover_medium}
                     alt={`${album.title} by ${album.artist.name} album cover`}
                     className="size-28"
+                    draggable={false}
                   />
                   <div className="flex flex-col justify-center min-w-0 pr-4">
                     <span className="block truncate text-xl font-semibold leading-tight">

@@ -17,7 +17,7 @@ export default function Nav({
       <button className="border-none!" onClick={() => router.history.back()}>
         <CornerDownLeft size={size} />
       </button>
-      <Link to="/">
+      <Link to="/" draggable={false}>
         <button className="border-none!">
           <House size={size} />
         </button>

@@ -82,11 +82,13 @@ export default function Rankings() {
                   to={'/album/$albumId'}
                   params={{ albumId: String(data.id) }}
                   className="flex gap-4 h-full"
+                  draggable={false}
                 >
                   <img
                     src={data.cover}
                     alt={`${data.album} by ${data.artist} album cover`}
                     className="size-28"
+                    draggable={false}
                   />
                   <div className="flex flex-col justify-center min-w-0 w-full pr-4">
                     <span className="block truncate text-xl font-semibold leading-tight">

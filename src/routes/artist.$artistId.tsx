@@ -140,6 +140,7 @@ function RouteComponent() {
             alt={artist.name}
             className="size-40 rounded-full object-cover border"
             crossOrigin="anonymous"
+            draggable={false}
           />
           <h1 className="text-4xl font-bold text-balance text-center md:text-left">
             {artist.name}
@@ -159,8 +160,14 @@ function RouteComponent() {
                   to="/album/$albumId"
                   params={{ albumId: String(album.id) }}
                   className="flex flex-col"
+                  draggable={false}
                 >
-                  <img src={album.cover} alt={album.title} className="aspect-square object-cover" />
+                  <img
+                    src={album.cover}
+                    alt={album.title}
+                    className="aspect-square object-cover"
+                    draggable={false}
+                  />
                   <div className="p-4">
                     <span className="block truncate font-semibold">{album.title}</span>
                   </div>

@@ -55,7 +55,7 @@ export default function AlbumData({ album }: { album: Album }) {
         crossOrigin="anonymous"
       />
       <h1 className="text-2xl font-bold text-balance">{album.title}</h1>
-      <Link to="/artist/$artistId" params={{ artistId: String(album.artist.id) }}>
+      <Link to="/artist/$artistId" params={{ artistId: String(album.artist.id) }} draggable={false}>
         <h2 className="text-xl font-bold text-balance opacity-80 hover:underline">
           {album.artist.name}
         </h2>
