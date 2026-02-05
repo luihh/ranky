@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type Props = {
   value?: number
@@ -9,6 +9,10 @@ type Props = {
 export default function NumberRating({ value = 0, max, onChange }: Props) {
   const displayValue = max === 10 ? Math.round(value / 10) : value
   const [inputValue, setInputValue] = useState<string>(String(displayValue))
+
+  useEffect(() => {
+    setInputValue(String(displayValue))
+  }, [displayValue])
 
   function handleChange(raw: string) {
     if (raw === '') {
@@ -22,20 +26,13 @@ export default function NumberRating({ value = 0, max, onChange }: Props) {
     const num = Number(digits)
     if (!Number.isInteger(num)) return
 
-    if (num > max) {
-      setInputValue(String(max))
-      return
-    }
-
-    setInputValue(digits)
+    const clamped = Math.min(num, max)
+    setInputValue(String(clamped))
   }
 
   function commitValue(raw: string) {
-    let v: number = raw === '' ? 0 : Number(raw)
-    if (!Number.isInteger(v)) return
-
-    const clamped = Math.min(Math.max(v, 0), max)
-    onChange(max === 10 ? clamped * 10 : clamped)
+    const v = raw === '' ? 0 : Number(raw)
+    onChange(max === 10 ? v * 10 : v)
   }
 
   return (

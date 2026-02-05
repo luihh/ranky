@@ -90,7 +90,7 @@ function RouteComponent() {
     if (!screenshotRef.current) return
     await document.fonts.ready
     const image = await snapdom(screenshotRef.current, { backgroundColor: 'transparent' })
-    const filename = `${album.title} - ${album.artist.name} ranking`
+    const filename = `${album.title} - ${album.artist.name} ranking.png`
     image.download({ filename })
   }
 
