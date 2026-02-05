@@ -5,7 +5,7 @@ export default function renderRating(
   rating: number | undefined,
   scoringSystem: AlbumSettings['scoringSystem']
 ) {
-  if (!rating) return null
+  if (rating == null) return null
 
   switch (scoringSystem) {
     case 0: {
