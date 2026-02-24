@@ -1,6 +1,6 @@
 import type { Album } from '@/lib/deezer'
 import { SCORING_SYSTEM_OPTIONS } from '@/consts'
-import useAlbumSettings from '@/utils/useAlbumSettings'
+import useAlbumSettings from '@/hooks/useAlbumSettings'
 
 import Section from '@/ui/Section'
 import RadioCards from '@/ui/RadioCards'

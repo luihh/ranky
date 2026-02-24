@@ -9,7 +9,7 @@ import {
   rgbToHex,
   hexToRgb
 } from '@/utils/generateTheme'
-import useAlbumColors from '@/utils/useAlbumColors'
+import useAlbumColors from '@/hooks/useAlbumColors'
 
 export default function AlbumData({ album }: { album: Album }) {
   const { colors, commitColors } = useAlbumColors(album.id)

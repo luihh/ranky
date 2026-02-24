@@ -1,5 +1,5 @@
-import useAlbumMeta from '@/utils/useAlbumMeta'
-import useAlbumSettings from '@/utils/useAlbumSettings'
+import useAlbumMeta from '@/hooks/useAlbumMeta'
+import useAlbumSettings from '@/hooks/useAlbumSettings'
 
 import StarRating from '../ratings/StarRating'
 import NumberRating from '../ratings/NumberRating'
