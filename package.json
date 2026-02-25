@@ -25,6 +25,7 @@
     "@tanstack/router-plugin": "^1.132.0",
     "@types/humanize-duration": "^3.27.4",
     "@zumer/snapdom": "^2.0.2",
+    "better-auth": "^1.4.19",
     "clsx": "^2.1.1",
     "fast-average-color": "^9.5.0",
     "humanize-duration": "^3.33.2",

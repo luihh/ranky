@@ -1,6 +1,109 @@
 import { Link } from '@tanstack/react-router'
-import { Settings } from 'lucide-react'
+import { LogOut, Settings, User } from 'lucide-react'
 import { SiDiscord } from '@icons-pack/react-simple-icons'
+import { authClient } from '@/lib/auth/client'
+import { useEffect, useRef, useState } from 'react'
+
+function UserMenu() {
+  const { data: session } = authClient.useSession()
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  if (!session) {
+    return (
+      <button
+        onClick={() =>
+          authClient.signIn.social({
+            provider: 'discord',
+            callbackURL: import.meta.env.VITE_FRONTEND_URL
+          })
+        }
+      >
+        Sign in
+      </button>
+    )
+  }
+
+  return (
+    <div className="relative" ref={ref}>
+      <a onClick={() => setOpen((prev) => !prev)} className="cursor-pointer" aria-label="User menu">
+        {session.user.image ? (
+          <img
+            src={session.user.image}
+            alt={session.user.name}
+            className="size-12 rounded-full object-cover"
+            draggable={false}
+          />
+        ) : (
+          <div className="flex rounded-full bg-bg size-12 border border-border items-center justify-center hover:bg-border transition-colors">
+            <User />
+          </div>
+        )}
+      </a>
+
+      {open && (
+        <div className="absolute right-0 top-11 bg-bg border border-border rounded-xl shadow-xl w-52 overflow-hidden z-50">
+          <div className="px-4 py-3 border-b border-border">
+            <p className="text-sm font-semibold truncate tracking-wider">@{session.user.name}</p>
+          </div>
+
+          <div>
+            <Link
+              to="/user/$userId"
+              params={{ userId: session.user.discordId }}
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-surface no-underline transition-colors"
+            >
+              <User size={20} className="opacity-75" />
+              Profile
+            </Link>
+
+            <Link
+              to="/settings"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-surface no-underline transition-colors"
+            >
+              <Settings size={20} className="opacity-75" />
+              Settings
+            </Link>
+          </div>
+
+          <div className="border-t">
+            <a
+              onClick={() => authClient.signOut()}
+              className="flex items-center gap-3 px-4 py-2.5 text-sm cursor-pointer hover:bg-red-500/80 no-underline transition-colors"
+            >
+              <LogOut size={20} className="opacity-75" />
+              Sign out
+            </a>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function DiscordServer() {
+  return (
+    <a
+      href="https://discord.gg/g5gZymxEyR"
+      className="flex rounded-full bg-blue-600 size-12 border border-border items-center justify-center hover:bg-blue-400 transition-colors"
+      aria-label="Discord server"
+    >
+      <SiDiscord />
+    </a>
+  )
+}
 
 export default function Navbar() {
   return (
@@ -10,22 +113,13 @@ export default function Navbar() {
           Ranky :)
         </Link>
 
-        <div className="flex flex-row gap-3">
-          <a href="https://discord.gg/g5gZymxEyR" className="md:hidden" draggable={false}>
-            <button aria-label="Discord server">
-              <SiDiscord size={18} />
-            </button>
-          </a>
-
-          <Link to="/settings" className="md:hidden" draggable={false}>
-            <button aria-label="Settings">
-              <Settings size={18} />
-            </button>
-          </Link>
+        <div className="flex flex-row gap-4 md:hidden">
+          <DiscordServer />
+          <UserMenu />
         </div>
       </div>
 
-      <form action="/search" className="flex w-full max-w-lg mx-auto">
+      <form action="/search" className="flex w-full max-w-md mx-auto">
         <input
           type="text"
           name="q"
@@ -40,17 +134,10 @@ export default function Navbar() {
         </button>
       </form>
 
-      <a href="https://discord.gg/g5gZymxEyR" className="hidden md:block">
-        <button aria-label="Discord server">
-          <SiDiscord size={18} />
-        </button>
-      </a>
-
-      <Link to="/settings" className="hidden md:block">
-        <button aria-label="Settings">
-          <Settings size={18} />
-        </button>
-      </Link>
+      <div className="hidden md:flex md:gap-4">
+        <DiscordServer />
+        <UserMenu />
+      </div>
     </nav>
   )
 }
