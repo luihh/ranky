@@ -7,6 +7,9 @@ import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
 import appCss from '../styles.css?url'
 
+import { useImportPrompt } from '@/hooks/useImportPrompt'
+import { ImportPrompt } from '@/ui/ImportPrompt'
+
 interface MyRouterContext {
   queryClient: QueryClient
 }
@@ -56,6 +59,8 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const { showPrompt, localRankings, dismiss } = useImportPrompt()
+
   return (
     <html lang="en">
       <head>
@@ -63,6 +68,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <Scripts />
+        {showPrompt && localRankings && (
+          <ImportPrompt localRankings={localRankings} onDismiss={dismiss} />
+        )}
         {children}
         <TanStackDevtools
           config={{
