@@ -32,7 +32,7 @@ export default function ScreenshotComponent({ album }: { album: Album }) {
           {album.artist.name}
         </h2>
 
-        <Rating albumId={album.id} />
+        <Rating albumId={album.id} readOnly />
 
         {notes && <p className="mt-2 max-w-60 leading-snug opacity-80">“{notes.slice(0, 250)}”</p>}
       </div>

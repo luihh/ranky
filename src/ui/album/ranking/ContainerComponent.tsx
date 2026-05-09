@@ -6,9 +6,14 @@ export default function ContainerComponent({
   id,
   title,
   items,
+  readOnly,
   onDragStart,
   onDrop
-}: Container & { onDragStart: (item: Item) => void; onDrop: (item: Item) => void }) {
+}: Container & {
+  readOnly: boolean
+  onDragStart: (item: Item) => void
+  onDrop: (item: Item) => void
+}) {
   return (
     <div key={id} id={id} className="flex flex-col gap-2">
       <h1 className="text-xl font-semibold opacity-75 text-center">{title}</h1>
@@ -19,6 +24,7 @@ export default function ContainerComponent({
             {...item}
             index={index}
             containerId={id}
+            readOnly={readOnly}
             onDragStart={() => onDragStart({ containerId: id, index })}
             onDrop={() => onDrop({ containerId: id, index })}
           />

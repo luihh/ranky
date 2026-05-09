@@ -8,11 +8,13 @@ export default function TrackSlot({
   title,
   index,
   containerId,
+  readOnly,
   onDragStart,
   onDrop
 }: Slot & {
   index: number
   containerId: Container['id']
+  readOnly: boolean
   onDragStart: () => void
   onDrop: () => void
 }) {
@@ -35,7 +37,7 @@ export default function TrackSlot({
           isOver && 'border-2 border-dashed',
           isDragging && 'opacity-60'
         )}
-        draggable={id !== 'placeholder'}
+        draggable={id !== 'placeholder' && !readOnly}
         onDragStart={() => {
           setIsDragging(true)
           onDragStart()

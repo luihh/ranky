@@ -1,23 +1,36 @@
-import useAlbumMeta from '@/hooks/useAlbumMeta'
+import { useRankingStore } from '@/stores/rankingStore'
 import useAlbumSettings from '@/hooks/useAlbumSettings'
-
 import StarRating from '../ratings/StarRating'
 import NumberRating from '../ratings/NumberRating'
 
-export default function Rating({ albumId }: { albumId: number }) {
-  const { meta, setRating } = useAlbumMeta(albumId)
+export default function Rating({ albumId, readOnly }: { albumId: number; readOnly: boolean }) {
+  const rating = useRankingStore((s) => s.rating)
+  const setRating = useRankingStore((s) => s.setRating)
   const { settings } = useAlbumSettings(albumId)
 
   switch (settings.scoringSystem) {
     case 0:
-      return <StarRating value={meta.rating} onChange={setRating} />
-
+      return (
+        <StarRating value={rating} readOnly={readOnly} onChange={readOnly ? () => {} : setRating} />
+      )
     case 1:
-      return <NumberRating value={meta.rating} max={10} onChange={setRating} />
-
+      return (
+        <NumberRating
+          value={rating}
+          max={10}
+          readOnly={readOnly}
+          onChange={readOnly ? () => {} : setRating}
+        />
+      )
     case 2:
-      return <NumberRating value={meta.rating} max={100} onChange={setRating} />
-
+      return (
+        <NumberRating
+          value={rating}
+          max={100}
+          readOnly={readOnly}
+          onChange={readOnly ? () => {} : setRating}
+        />
+      )
     default:
       return null
   }

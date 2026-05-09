@@ -1,17 +1,8 @@
-import type { Album } from '@/lib/deezer'
-
-import { useEffect } from 'react'
-import { useAlbumRankingStore } from '@/stores/albumRankingStore'
-
+import { useRankingStore } from '@/stores/rankingStore'
 import ContainerComponent from './ranking/ContainerComponent'
 
-export default function AlbumMain({ album }: { album: Album }) {
-  const { containers, dragged, init, moveItem, setDragged } = useAlbumRankingStore()
-
-  useEffect(() => {
-    init(album)
-    return () => useAlbumRankingStore.getState().reset()
-  }, [album.id])
+export default function AlbumMain({ readOnly }: { readOnly: boolean }) {
+  const { containers, dragged, moveItem, setDragged } = useRankingStore()
 
   return (
     <main className="my-auto mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
@@ -19,9 +10,10 @@ export default function AlbumMain({ album }: { album: Album }) {
         <ContainerComponent
           key={container.id}
           {...container}
-          onDragStart={({ containerId, index }) => setDragged({ containerId, index })}
+          readOnly={readOnly}
+          onDragStart={({ containerId, index }) => !readOnly && setDragged({ containerId, index })}
           onDrop={({ containerId, index }) => {
-            if (!dragged) return
+            if (readOnly || !dragged) return
             moveItem(dragged, { containerId, index })
             setDragged(null)
           }}

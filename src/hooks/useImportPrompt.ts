@@ -24,7 +24,7 @@ export function useImportPrompt() {
 
   function dismiss() {
     setShowPrompt(false)
-    router.history.go(0)
+    // router.history.go(0)
   }
 
   return { showPrompt, localRankings, dismiss }

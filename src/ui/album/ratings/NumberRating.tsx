@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react'
 type Props = {
   value?: number
   max: 10 | 100
+  readOnly: boolean
   onChange: (value: number) => void
 }
 
-export default function NumberRating({ value = 0, max, onChange }: Props) {
+export default function NumberRating({ value = 0, max, readOnly, onChange }: Props) {
   const displayValue = max === 10 ? Math.round(value / 10) : value
   const [inputValue, setInputValue] = useState<string>(String(displayValue))
 
@@ -43,6 +44,7 @@ export default function NumberRating({ value = 0, max, onChange }: Props) {
         pattern="[0-9]*"
         max={max}
         value={inputValue}
+        disabled={readOnly}
         onChange={(e) => handleChange(e.target.value)}
         onBlur={() => commitValue(inputValue)}
         className="text-right outline-none"

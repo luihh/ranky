@@ -119,12 +119,12 @@ export default function Navbar() {
         </div>
       </div>
 
-      <form action="/search" className="flex w-full max-w-md mx-auto">
+      <form action="/search" className="flex w-full max-w-md justify-center mx-auto">
         <input
           type="text"
           name="q"
           placeholder="Search an album or artist..."
-          className="w-[75%] flex-1 p-2 border rounded-l-lg bg-surface focus:outline-none"
+          className="w-[75%] p-2 border rounded-l-lg bg-surface focus:outline-none"
         />
         <button
           type="submit"
@@ -134,7 +134,7 @@ export default function Navbar() {
         </button>
       </form>
 
-      <div className="hidden md:flex md:gap-4">
+      <div className="hidden md:flex md:flex-row md:gap-4">
         <DiscordServer />
         <UserMenu />
       </div>

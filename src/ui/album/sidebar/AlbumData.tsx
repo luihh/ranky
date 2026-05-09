@@ -1,49 +1,13 @@
 import type { Album } from '@/lib/deezer'
-
-import { useRef, useEffect } from 'react'
 import { Link } from '@tanstack/react-router'
-import {
-  generateTheme,
-  removeTheme,
-  getImgColorPalette,
-  rgbToHex,
-  hexToRgb
-} from '@/utils/generateTheme'
-import useAlbumColors from '@/hooks/useAlbumColors'
 
-export default function AlbumData({ album }: { album: Album }) {
-  const { colors, commitColors } = useAlbumColors(album.id)
-
-  const imgRef = useRef<HTMLImageElement>(null)
-
-  useEffect(() => {
-    if (colors.savedColor !== '') {
-      generateTheme(hexToRgb(colors.savedColor))
-      return
-    }
-
-    const img = imgRef.current
-    if (!img) return
-
-    const handleImgLoad = async () => {
-      const palette = await getImgColorPalette(img)
-      if (!palette) return
-
-      generateTheme(palette)
-
-      const base = rgbToHex(palette)
-      commitColors(base)
-    }
-
-    if (img.complete) handleImgLoad()
-    else img.addEventListener('load', handleImgLoad)
-
-    return () => {
-      img?.removeEventListener('load', handleImgLoad)
-      removeTheme()
-    }
-  }, [colors.savedColor])
-
+export default function AlbumData({
+  album,
+  imgRef
+}: {
+  album: Album
+  imgRef: React.RefObject<HTMLImageElement | null>
+}) {
   return (
     <div className="flex flex-col items-center w-full">
       <img
