@@ -1,4 +1,4 @@
-import useAlbumMeta from '@/utils/useAlbumMeta'
+import useAlbumMeta from '@/hooks/useAlbumMeta'
 
 export default function Notes({ albumId }: { albumId: number }) {
   const { meta, setNotes } = useAlbumMeta(albumId)

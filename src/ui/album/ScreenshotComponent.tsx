@@ -1,8 +1,8 @@
 import type { Album } from '@/lib/deezer'
 
 import { useAlbumRankingStore } from '@/stores/albumRankingStore'
-import useAlbumSettings from '@/utils/useAlbumSettings'
-import useAlbumMeta from '@/utils/useAlbumMeta'
+import useAlbumSettings from '@/hooks/useAlbumSettings'
+import useAlbumMeta from '@/hooks/useAlbumMeta'
 import clsx from 'clsx'
 
 import Rating from './sidebar/Rating'

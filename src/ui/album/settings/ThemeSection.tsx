@@ -1,7 +1,7 @@
 import type { Album } from '@/lib/deezer'
 import { useGlobalColorStore } from '@/stores/globalColorStore'
 import { generateTheme, hexToRgb } from '@/utils/generateTheme'
-import useAlbumColors from '@/utils/useAlbumColors'
+import useAlbumColors from '@/hooks/useAlbumColors'
 
 import Section from '@/ui/Section'
 import ColorPicker from '@/ui/ColorPicker'

@@ -2,7 +2,7 @@ import type { Album } from '@/lib/deezer'
 import { SafeStorage } from '@/lib/safeStorage'
 import { AlbumCollection, AlbumCollectionSchema, AlbumSettings } from '@/schemas/album'
 import { SETTINGS_SHOWCASE_SCREENSHOTS } from '@/consts'
-import useAlbumSettings from '@/utils/useAlbumSettings'
+import useAlbumSettings from '@/hooks/useAlbumSettings'
 
 import Section from '@/ui/Section'
 import Switch from '@/ui/Switch'
