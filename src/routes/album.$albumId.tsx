@@ -4,6 +4,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { queryOptions } from '@tanstack/react-query'
 import { getAlbum } from '@/lib/deezer'
 import { snapdom } from '@zumer/snapdom'
+import { downloadBlob } from '@/utils/downloadImage'
 
 import Nav from '@/ui/album/Nav'
 import SettingsDialog from '@/ui/album/settings/SettingsDialog'
@@ -91,7 +92,10 @@ function RouteComponent() {
     await document.fonts.ready
     const image = await snapdom(screenshotRef.current, { backgroundColor: 'transparent' })
     const filename = `${album.title} - ${album.artist.name} ranking.png`
-    image.download({ filename })
+    const blob = await image.toBlob({ type: 'png' })
+    if (!blob) return
+    // image.download({ filename })
+    await downloadBlob(blob, filename)
   }
 
   return (
