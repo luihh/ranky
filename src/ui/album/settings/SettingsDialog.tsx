@@ -9,12 +9,12 @@ import ScoringSection from './ScoringSection'
 type Props = {
   album: Album
   isVisible: boolean
-  setSettingsVisible: (v: boolean) => void
+  setIsVisible: (v: boolean) => void
 }
 
-export default function SettingsDialog({ album, isVisible, setSettingsVisible }: Props) {
+export default function SettingsDialog({ album, isVisible, setIsVisible }: Props) {
   return (
-    <Dialog isVisible={isVisible} onClose={() => setSettingsVisible(false)}>
+    <Dialog isVisible={isVisible} onClose={() => setIsVisible(false)}>
       <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 justify-items-center">
         <ThemeSection album={album} />
         <ScreenshotSection album={album} />

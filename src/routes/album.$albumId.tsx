@@ -100,11 +100,7 @@ function RouteComponent() {
 
   return (
     <>
-      <SettingsDialog
-        album={album}
-        isVisible={settingsVisible}
-        setSettingsVisible={setSettingsVisible}
-      />
+      <SettingsDialog album={album} isVisible={settingsVisible} setIsVisible={setSettingsVisible} />
       <Nav size={18} settingsVisible={settingsVisible} setSettingsVisible={setSettingsVisible} />
       <div className="absolute -top-2499.75" aria-hidden ref={screenshotRef}>
         <ScreenshotComponent album={album} />
