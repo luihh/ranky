@@ -1,7 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useGlobalColorStore } from '@/stores/globalColorStore'
-import { useEffect } from 'react'
-import { generateTheme, hexToRgb, removeTheme } from '@/utils/generateTheme'
+import useGlobalTheme from '@/hooks/useGlobalTheme'
 
 import Navbar from '@/ui/Navbar'
 import ThemeSection from '@/ui/settings/ThemeSection'
@@ -15,15 +13,7 @@ export const Route = createFileRoute('/settings')({
 })
 
 function RouteComponent() {
-  const { color } = useGlobalColorStore()
-
-  useEffect(() => {
-    if (color) {
-      generateTheme(hexToRgb(color))
-    } else {
-      removeTheme()
-    }
-  }, [color])
+  useGlobalTheme()
 
   return (
     <>
