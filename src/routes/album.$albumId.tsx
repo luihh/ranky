@@ -6,7 +6,7 @@ import { getAlbum } from '@/lib/deezer'
 import { snapdom } from '@zumer/snapdom'
 
 import Nav from '@/ui/album/Nav'
-import SettingsDialog from '@/ui/album/settings/Dialog'
+import SettingsDialog from '@/ui/album/settings/SettingsDialog'
 import Sidebar from '@/ui/album/Sidebar'
 import Main from '@/ui/album/Main'
 import ScreenshotComponent from '@/ui/album/ScreenshotComponent'
