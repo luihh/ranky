@@ -1,14 +1,18 @@
-import { CornerDownLeft, House, Settings } from 'lucide-react'
+import { CornerDownLeft, House, Settings, WandSparkles } from 'lucide-react'
 import { Link, useRouter } from '@tanstack/react-router'
 
 export default function Nav({
   size,
   settingsVisible,
-  setSettingsVisible
+  setSettingsVisible,
+  smartRankVisible,
+  setSmartRankVisible
 }: {
   size: number
   settingsVisible: boolean
   setSettingsVisible: (isVisible: boolean) => void
+  smartRankVisible: boolean
+  setSmartRankVisible: (isVisible: boolean) => void
 }) {
   const router = useRouter()
 
@@ -24,6 +28,9 @@ export default function Nav({
       </Link>
       <button className="border-none!" onClick={() => setSettingsVisible(!settingsVisible)}>
         <Settings size={size} />
+      </button>
+      <button className="border-none!" onClick={() => setSmartRankVisible(!smartRankVisible)}>
+        <WandSparkles size={size} />
       </button>
     </nav>
   )

@@ -8,6 +8,7 @@ import { downloadBlob } from '@/utils/downloadImage'
 
 import Nav from '@/ui/album/Nav'
 import SettingsDialog from '@/ui/album/settings/SettingsDialog'
+import SmartRankDialog from '@/ui/album/smartRank/SmartRankDialog'
 import Sidebar from '@/ui/album/Sidebar'
 import Main from '@/ui/album/Main'
 import ScreenshotComponent from '@/ui/album/ScreenshotComponent'
@@ -86,6 +87,7 @@ function RouteComponent() {
   const screenshotRef = useRef<HTMLDivElement>(null)
 
   const [settingsVisible, setSettingsVisible] = useState<boolean>(false)
+  const [smartRankVisible, setSmartRankVisible] = useState<boolean>(false)
 
   async function downloadScreenshot() {
     if (!screenshotRef.current) return
@@ -101,7 +103,18 @@ function RouteComponent() {
   return (
     <>
       <SettingsDialog album={album} isVisible={settingsVisible} setIsVisible={setSettingsVisible} />
-      <Nav size={18} settingsVisible={settingsVisible} setSettingsVisible={setSettingsVisible} />
+      <SmartRankDialog
+        album={album}
+        isVisible={smartRankVisible}
+        setIsVisible={setSmartRankVisible}
+      />
+      <Nav
+        size={18}
+        settingsVisible={settingsVisible}
+        setSettingsVisible={setSettingsVisible}
+        smartRankVisible={smartRankVisible}
+        setSmartRankVisible={setSmartRankVisible}
+      />
       <div className="absolute -top-2499.75" aria-hidden ref={screenshotRef}>
         <ScreenshotComponent album={album} />
       </div>

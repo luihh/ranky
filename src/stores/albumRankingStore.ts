@@ -13,11 +13,34 @@ type RankingState = {
 
   init: (album: Album) => void
   moveItem: (source: Item, target: Item) => void
+  applyRanking: (order: Slot[]) => void
   setDragged: (item: Item | null) => void
   reset: () => void
 }
 
 const albumStore = new SafeStorage<AlbumCollection>('albumRankings', AlbumCollectionSchema)
+
+function saveRanking(album: Album, rankingItems: Slot[]) {
+  albumStore.update((prev) => {
+    const collection = prev ?? {}
+    const albumData = collection[album.id]
+
+    return {
+      ...collection,
+      [album.id]: {
+        ...albumData,
+        id: String(album.id),
+        album: album.title,
+        artist: album.artist.name,
+        cover: album.cover,
+        timestamp: Date.now(),
+        tracks: rankingItems
+          .map((track, i) => (track.title ? { name: track.title, slotIndex: i } : null))
+          .filter(Boolean)
+      }
+    }
+  })
+}
 
 export const useAlbumRankingStore = create<RankingState>((set) => ({
   containers: [],
@@ -69,25 +92,26 @@ export const useAlbumRankingStore = create<RankingState>((set) => ({
       const ranking = containers.find((c) => c.id === 'ranking')
       if (!ranking) return { containers }
 
-      albumStore.update((prev) => {
-        const collection = prev ?? {}
-        const albumData = collection[album.id]
+      saveRanking(album, ranking.items)
 
-        return {
-          ...collection,
-          [album.id]: {
-            ...albumData,
-            id: String(album.id),
-            album: album.title,
-            artist: album.artist.name,
-            cover: album.cover,
-            timestamp: Date.now(),
-            tracks: ranking.items
-              .map((track, i) => (track.title ? { name: track.title, slotIndex: i } : null))
-              .filter(Boolean)
-          }
-        }
+      return { containers }
+    }),
+
+  applyRanking: (order) =>
+    set((state) => {
+      const album = state.album
+      if (!album) return state
+
+      const rankingItems: Slot[] = order
+      const tracklistItems: Slot[] = album.tracks.map(() => createPlaceholder())
+
+      const containers = state.containers.map((c) => {
+        if (c.id === 'ranking') return { ...c, items: rankingItems }
+        if (c.id === 'tracklist') return { ...c, items: tracklistItems }
+        return c
       })
+
+      saveRanking(album, rankingItems)
 
       return { containers }
     }),
