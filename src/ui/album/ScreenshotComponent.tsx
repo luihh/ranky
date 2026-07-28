@@ -23,7 +23,7 @@ export default function ScreenshotComponent({ album }: { album: Album }) {
   return (
     <div
       key={showPlaceholders ? 'with-placeholders' : 'no-placeholders'}
-      className="p-8 bg-bg flex flex-row rounded-2xl gap-8 items-center"
+      className="p-8 bg-bg flex flex-row gap-8 items-center"
     >
       <div className="flex flex-col min-w-80 w-80 h-full text-center items-center">
         <img src={album.cover} crossOrigin="anonymous" className="size-60 rounded-2xl mb-2" />
