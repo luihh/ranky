@@ -1,5 +1,6 @@
-export type Slot = Omit<Track, 'id'> & {
-  id: Track['id'] | 'placeholder'
+export type Slot = {
+  id: number | 'placeholder'
+  title: string
 }
 
 export type Container = {

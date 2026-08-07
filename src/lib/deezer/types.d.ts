@@ -80,6 +80,7 @@ export interface DeezerPaginatedResponse<T> {
 export interface Track {
   id: number
   title: string
+  preview: string
 }
 
 export interface Album {

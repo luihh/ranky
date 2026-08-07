@@ -40,7 +40,7 @@ export async function getAlbum(id: number): Promise<Album | null> {
 
     if (!page.data) break
 
-    allTracks.push(...page.data.map(({ id, title }) => ({ id, title })))
+    allTracks.push(...page.data.map(({ id, title, preview }) => ({ id, title, preview })))
 
     nextUrl = page.next ?? null
   }
