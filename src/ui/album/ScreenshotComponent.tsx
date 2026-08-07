@@ -14,7 +14,7 @@ export default function ScreenshotComponent({ album }: { album: Album }) {
   const { meta } = useAlbumMeta(album.id)
   const notes = meta.notes
 
-  const containers = useAlbumRankingStore((state) => state.containers)
+  const containers = useAlbumRankingStore((s) => s.containers)
   const ranking = containers.find((c) => c.id === 'ranking')
   const items = showPlaceholders
     ? ranking?.items

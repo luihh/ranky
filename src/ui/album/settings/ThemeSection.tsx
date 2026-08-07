@@ -8,7 +8,7 @@ import ColorPicker from '@/ui/ColorPicker'
 
 export default function ThemeSection({ album }: { album: Album }) {
   const { colors, setSavedColor } = useAlbumColors(album.id)
-  const { setColor: setGlobalColor } = useGlobalColorStore()
+  const setGlobalColor = useGlobalColorStore((s) => s.setColor)
 
   function handleColorPicker(c: string) {
     const base = hexToRgb(c)

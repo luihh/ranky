@@ -3,7 +3,7 @@ import { useGlobalColorStore } from '@/stores/globalColorStore'
 import { generateTheme, removeTheme, hexToRgb } from '@/utils/generateTheme'
 
 export default function useGlobalTheme() {
-  const { color } = useGlobalColorStore()
+  const color = useGlobalColorStore((s) => s.color)
 
   useEffect(() => {
     if (color) {

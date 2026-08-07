@@ -10,7 +10,8 @@ import renderRating from '@/utils/renderRating'
 export default function Rankings() {
   const global = useGlobalSettingsStore()
   const [albums, setAlbums] = useState<AlbumCollection | null>({})
-  const { sortBy, setSortBy } = useHomeSortByStore()
+  const sortBy = useHomeSortByStore((s) => s.sortBy)
+  const setSortBy = useHomeSortByStore((s) => s.setSortBy)
 
   useEffect(() => {
     const albumsSaved = new SafeStorage<AlbumCollection>(

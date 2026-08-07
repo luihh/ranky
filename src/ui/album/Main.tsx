@@ -6,7 +6,11 @@ import { useAlbumRankingStore } from '@/stores/albumRankingStore'
 import ContainerComponent from './ranking/ContainerComponent'
 
 export default function AlbumMain({ album }: { album: Album }) {
-  const { containers, dragged, init, moveItem, setDragged } = useAlbumRankingStore()
+  const containers = useAlbumRankingStore((s) => s.containers)
+  const dragged = useAlbumRankingStore((s) => s.dragged)
+  const init = useAlbumRankingStore((s) => s.init)
+  const moveItem = useAlbumRankingStore((s) => s.moveItem)
+  const setDragged = useAlbumRankingStore((s) => s.setDragged)
 
   useEffect(() => {
     init(album)

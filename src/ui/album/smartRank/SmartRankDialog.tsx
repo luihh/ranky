@@ -39,7 +39,7 @@ export default function SmartRankDialog({ album, isVisible, setIsVisible }: Prop
   const [pair, setPair] = useState<[Track, Track] | null>(null)
   const [ranking, setRanking] = useState<Track[] | null>(null)
   const [comparisonCount, setComparisonCount] = useState(0)
-  const { applyRanking } = useAlbumRankingStore()
+  const applyRanking = useAlbumRankingStore((s) => s.applyRanking)
 
   const estimatedComparisons = useMemo(() => {
     const n = album.tracks.length

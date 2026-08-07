@@ -6,7 +6,9 @@ import ColorPicker from '@/ui/ColorPicker'
 import { useState } from 'react'
 
 export default function ThemeComponent() {
-  const { color: globalColor, defaultColor, setColor: setGlobalColor } = useGlobalColorStore()
+  const globalColor = useGlobalColorStore((s) => s.color)
+  const defaultColor = useGlobalColorStore((s) => s.defaultColor)
+  const setGlobalColor = useGlobalColorStore((s) => s.setColor)
   const [color, setColor] = useState<string>(globalColor)
 
   function handleColorPicker(c: string) {

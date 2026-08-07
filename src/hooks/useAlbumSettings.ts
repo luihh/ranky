@@ -6,7 +6,8 @@ import { useEffect } from 'react'
 export default function useAlbumSettings(albumId: number) {
   const global = useGlobalSettingsStore()
 
-  const { hydrate, setSettings } = useAlbumSettingsStore()
+  const hydrate = useAlbumSettingsStore((s) => s.hydrate)
+  const setSettings = useAlbumSettingsStore((s) => s.setSettings)
   const stored = useAlbumSettingsStore((s) => s.settings[albumId])
 
   useEffect(() => {

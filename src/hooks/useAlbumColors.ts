@@ -3,7 +3,8 @@ import { useAlbumColorStore } from '@/stores/albumColorStore'
 import { useEffect } from 'react'
 
 export default function useAlbumColors(albumId: number) {
-  const { hydrate, setColors } = useAlbumColorStore()
+  const hydrate = useAlbumColorStore((s) => s.hydrate)
+  const setColors = useAlbumColorStore((s) => s.setColors)
   const stored = useAlbumColorStore((s) => s.colors[albumId])
 
   useEffect(() => {
