@@ -11,7 +11,7 @@ export default function Dialog({ isVisible, onClose, children }: Props) {
   return (
     <Activity mode={isVisible ? 'visible' : 'hidden'}>
       <div
-        className="fixed top-0 bg-black/75 h-screen w-screen z-50 content-center"
+        className="fixed top-0 bg-black/75 h-screen w-screen z-50 content-center overscroll-contain"
         onClick={onClose}
       >
         <div

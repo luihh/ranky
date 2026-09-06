@@ -4,6 +4,7 @@ import { useAlbumRankingStore } from '@/stores/albumRankingStore'
 import type { Album } from '@/lib/deezer'
 
 import Dialog from '@/ui/Dialog'
+import TrackPreview from '@/ui/TrackPreview'
 
 type Track = Album['tracks'][number]
 type CompareResult = -1 | 0 | 1
@@ -84,6 +85,21 @@ export default function SmartRankDialog({ album, isVisible, setIsVisible }: Prop
     setIsVisible(false)
   }
 
+  function SelectionButton({ track, result }: { track: Track; result: CompareResult }) {
+    return (
+      <button
+        className="flex-1! text-center! py-8! text-2xl! whitespace-normal! leading-snug!"
+        onClick={() => choose(result)}
+      >
+        <span className="min-w-0 truncate">{track.title}</span>
+      </button>
+    )
+  }
+
+  function PreviewButton({ track }: { track: Track }) {
+    return <>{track.preview ? <TrackPreview id={track.id * 23} preview={track.preview} /> : null}</>
+  }
+
   return (
     <Dialog isVisible={isVisible} onClose={close}>
       <div className="flex flex-col justify-center items-center gap-4 m-4">
@@ -110,27 +126,35 @@ export default function SmartRankDialog({ album, isVisible, setIsVisible }: Prop
         </div>
 
         {pair && (
-          <div className="w-full flex flex-col gap-4">
-            <div className="relative flex flex-col sm:flex-row gap-3 w-full items-stretch">
-              <button
-                className="flex-1! text-center! py-8! text-2xl! whitespace-normal! leading-snug!"
-                onClick={() => choose(-1)}
-              >
-                {pair[0].title}
-              </button>
+          <div
+            key={`${pair[0].id}-${pair[1].id}-${comparisonCount + 1}`}
+            className="w-full flex flex-col gap-2"
+          >
+            <div
+              className="w-full grid gap-2 grid-cols-1 sm:grid-cols-2
+            [grid-template-areas:'preview0'_'buttons'_'preview1']
+            sm:[grid-template-areas:'buttons_buttons'_'preview0_preview1']"
+            >
+              <div className="[grid-area:buttons] relative flex flex-col sm:flex-row gap-3 w-full items-stretch">
+                <SelectionButton track={pair[0]} result={-1} />
 
-              <div className="flex items-center justify-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-bg border text-xs font-bold pointer-events-none select-none">
-                VS
+                <div className="flex items-center justify-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-bg border text-xs font-bold pointer-events-none select-none">
+                  VS
+                </div>
+
+                <SelectionButton track={pair[1]} result={1} />
               </div>
 
-              <button
-                className="flex-1! text-center! py-8! text-2xl! whitespace-normal! leading-snug!"
-                onClick={() => choose(1)}
-              >
-                {pair[1].title}
-              </button>
+              <div className="[grid-area:preview0] flex items-center justify-center">
+                <PreviewButton track={pair[0]} />
+              </div>
+
+              <div className="[grid-area:preview1] flex items-center justify-center">
+                <PreviewButton track={pair[1]} />
+              </div>
             </div>
-            <button className="text-sm! opacity-70! self-center!" onClick={() => choose(0)}>
+
+            <button className="text-sm! opacity-70! self-center! mt-4!" onClick={() => choose(0)}>
               No preference
             </button>
           </div>

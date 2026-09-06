@@ -1,8 +1,8 @@
 import type { Container, Slot } from '@/lib/dnd'
 
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { useTrackPreviewStore } from '@/stores/trackPreviewStore'
-import { Play, Pause } from 'lucide-react'
+import TrackPreview from '@/ui/TrackPreview'
 import clsx from 'clsx'
 
 export default function TrackSlot({
@@ -22,32 +22,13 @@ export default function TrackSlot({
 }) {
   const [isOver, setIsOver] = useState<boolean>(false)
   const [isDragging, setIsDragging] = useState<boolean>(false)
-  const [isPlaying, setIsPlaying] = useState<boolean>(false)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   const playingId = useTrackPreviewStore((s) => s.playingId)
   const openId = useTrackPreviewStore((s) => s.openId)
-  const setPlayingId = useTrackPreviewStore((s) => s.setPlayingId)
   const setOpenId = useTrackPreviewStore((s) => s.setOpenId)
 
-  useEffect(() => {
-    if (typeof id === 'number' && playingId !== id && audioRef.current) {
-      audioRef.current.pause()
-    }
-  }, [playingId, id])
-
-  const togglePreview = () => {
-    if (!audioRef.current || id === 'placeholder') return
-    if (isPlaying) {
-      audioRef.current.pause()
-    } else {
-      audioRef.current.currentTime = 0
-      audioRef.current.play()
-      setPlayingId(id)
-    }
-  }
-
   const isOpen = typeof id === 'number' && openId === id
+  const isPlaying = typeof id === 'number' && playingId === id
   const previewOpen = isPlaying || isOpen
 
   return (
@@ -109,29 +90,8 @@ export default function TrackSlot({
                       : 'w-0 opacity-0 group-hover:w-8 group-hover:opacity-100'
                   )}
                 >
-                  <button
-                    type="button"
-                    draggable={false}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      togglePreview()
-                    }}
-                    className="px-2! rounded-full!"
-                    aria-label={isPlaying ? 'Pause preview' : 'Play preview'}
-                  >
-                    {isPlaying ? <Pause className="size-4" /> : <Play className="size-4" />}
-                  </button>
+                  <TrackPreview id={id} preview={preview} />
                 </div>
-                <audio
-                  ref={audioRef}
-                  src={preview}
-                  onPlay={() => setIsPlaying(true)}
-                  onPause={() => {
-                    setIsPlaying(false)
-                    if (playingId === id) setPlayingId(null)
-                  }}
-                  onEnded={() => setIsPlaying(false)}
-                />
               </>
             ) : null}
           </div>
