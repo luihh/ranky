@@ -4,6 +4,7 @@ import { AlbumCollectionSchema, type AlbumCollection } from '@/schemas/album'
 import { useEffect, useState } from 'react'
 import { type SortOptions, useHomeSortByStore } from '@/stores/homeSortByStore'
 import { useGlobalSettingsStore } from '@/stores/globalSettingsStore'
+import { Plus } from 'lucide-react'
 import humanizeDuration from 'humanize-duration'
 import renderRating from '@/utils/renderRating'
 
@@ -42,13 +43,20 @@ export default function Rankings() {
       })
     : []
 
-  if (!albums || Object.keys(albums).length <= 0) {
-    return (
-      <p className="text-2xl text-center text-balance font-semibold opacity-75 p-6">
-        No albums ranked yet
-      </p>
-    )
-  }
+  // if (!albums || Object.keys(albums).length <= 0) {
+  //   return (
+  //     <div className="flex flex-col justify-center items-center gap-4 w-full md:w-[90%] p-6 mx-auto">
+  //       <p className="text-2xl text-center text-balance font-semibold opacity-75">
+  //         No albums ranked yet
+  //       </p>
+  //       <div className="w-full max-w-xs border border-dashed rounded-2xl bg-surface/25 overflow-hidden transition hover:bg-surface/15">
+  //         <Link to="/" className="flex items-center justify-center h-28 w-full" draggable={false}>
+  //           <Plus className="size-6 opacity-50" />
+  //         </Link>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   return (
     <>
@@ -108,6 +116,18 @@ export default function Rankings() {
               </li>
             )
           })}
+          <li className="group border border-dashed rounded-2xl bg-surface/25 overflow-hidden transition hover:bg-surface/15">
+            <Link
+              to="/"
+              className="relative flex items-center justify-center h-28 w-full overflow-hidden"
+              draggable={false}
+            >
+              <Plus className="size-6 opacity-50 transition-transform duration-200 group-hover:-translate-y-3" />
+              <span className="absolute text-sm font-medium opacity-0 translate-y-5 transition-all duration-200 group-hover:opacity-70 group-hover:translate-y-2.5">
+                Custom Album
+              </span>
+            </Link>
+          </li>
         </ul>
       </div>
     </>
