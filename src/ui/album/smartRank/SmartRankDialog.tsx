@@ -88,10 +88,10 @@ export default function SmartRankDialog({ album, isVisible, setIsVisible }: Prop
   function SelectionButton({ track, result }: { track: Track; result: CompareResult }) {
     return (
       <button
-        className="flex-1! text-center! py-8! text-2xl! whitespace-normal! leading-snug!"
+        className="flex-1! min-w-0! text-center! py-8! text-2xl! whitespace-normal! leading-snug!"
         onClick={() => choose(result)}
       >
-        <span className="min-w-0 truncate">{track.title}</span>
+        <span className="min-w-0 block truncate">{track.title}</span>
       </button>
     )
   }
