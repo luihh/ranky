@@ -10,6 +10,11 @@ const AlbumColorSchema = z.object({
   initialColor: z.string()
 })
 
+const CustomTrackSchema = z.object({
+  id: z.number(),
+  title: z.string()
+})
+
 export const AlbumSchema = z.object({
   version: z.number().optional(),
   id: z.string(),
@@ -25,6 +30,8 @@ export const AlbumSchema = z.object({
       slotIndex: z.number()
     })
   ),
+  isCustom: z.boolean().optional(),
+  customTracks: z.array(CustomTrackSchema).optional(),
   settings: AlbumSettingsSchema.optional(),
   colors: AlbumColorSchema.optional()
 })
@@ -35,3 +42,4 @@ export type Album = z.infer<typeof AlbumSchema>
 export type AlbumCollection = z.infer<typeof AlbumCollectionSchema>
 export type AlbumSettings = z.infer<typeof AlbumSettingsSchema>
 export type AlbumColors = z.infer<typeof AlbumColorSchema>
+export type CustomTrack = z.infer<typeof CustomTrackSchema>

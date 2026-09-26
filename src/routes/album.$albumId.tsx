@@ -1,14 +1,17 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createFileRoute, notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { queryOptions } from '@tanstack/react-query'
 import { getAlbum } from '@/lib/deezer'
+import { getCustomAlbum } from '@/utils/customAlbum'
 import { snapdom } from '@zumer/snapdom'
 import { downloadBlob } from '@/utils/downloadImage'
+import { useAlbumRankingStore } from '@/stores/albumRankingStore'
 
 import Nav from '@/ui/album/Nav'
 import SettingsDialog from '@/ui/album/settings/SettingsDialog'
 import SmartRankDialog from '@/ui/album/smartRank/SmartRankDialog'
+import CoverDialog from '@/ui/album/sidebar/CoverDialog'
 import Sidebar from '@/ui/album/Sidebar'
 import Main from '@/ui/album/Main'
 import ScreenshotComponent from '@/ui/album/ScreenshotComponent'
@@ -36,6 +39,10 @@ export const Route = createFileRoute('/album/$albumId')({
 
     if (Number.isNaN(albumId)) {
       throw notFound()
+    }
+
+    if (albumId < 0) {
+      return null
     }
 
     const album = await context.queryClient.ensureQueryData(albumQuery(albumId))
@@ -82,15 +89,53 @@ export const Route = createFileRoute('/album/$albumId')({
 })
 
 function RouteComponent() {
-  const album = Route.useLoaderData()
+  const loaderAlbum = Route.useLoaderData()
+  const { albumId } = Route.useParams()
+  const [customAlbum, setCustomAlbum] = useState<typeof loaderAlbum | undefined>(undefined)
+  const id = Number(albumId)
 
   const screenshotRef = useRef<HTMLDivElement>(null)
 
   const [settingsVisible, setSettingsVisible] = useState<boolean>(false)
   const [smartRankVisible, setSmartRankVisible] = useState<boolean>(false)
+  const [coverDialogVisible, setCoverDialogVisible] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (id >= 0) return
+
+    const album = getCustomAlbum(id)
+
+    setCustomAlbum(album ?? null)
+  }, [id])
+
+  if (id < 0 && customAlbum === undefined) {
+    return <p>Loading...</p>
+  }
+
+  const album = id < 0 ? customAlbum : loaderAlbum
+
+  if (!album) {
+    return <p>Album not found...</p>
+  }
+
+  function updateCustomAlbumState(
+    patch: Partial<{ title: string; cover: string; artistName: string }>
+  ) {
+    useAlbumRankingStore.getState().updateAlbumInfo(patch)
+
+    setCustomAlbum((prev) => {
+      if (!prev) return prev
+      return {
+        ...prev,
+        title: patch.title ?? prev.title,
+        cover: patch.cover ?? prev.cover,
+        artist: patch.artistName ? { ...prev.artist, name: patch.artistName } : prev.artist
+      }
+    })
+  }
 
   async function downloadScreenshot() {
-    if (!screenshotRef.current) return
+    if (!album || !screenshotRef.current) return
     await document.fonts.ready
     const image = await snapdom(screenshotRef.current, { backgroundColor: 'transparent' })
     const filename = `${album.title} - ${album.artist.name} ranking.png`
@@ -108,6 +153,14 @@ function RouteComponent() {
         isVisible={smartRankVisible}
         setIsVisible={setSmartRankVisible}
       />
+      {album.id < 0 && (
+        <CoverDialog
+          album={album}
+          isVisible={coverDialogVisible}
+          setIsVisible={setCoverDialogVisible}
+          onUpdate={updateCustomAlbumState}
+        />
+      )}
       <Nav
         size={18}
         settingsVisible={settingsVisible}
@@ -119,7 +172,12 @@ function RouteComponent() {
         <ScreenshotComponent album={album} />
       </div>
       <div className="min-h-screen grid grid-cols-1 lg:grid-cols-[35vw_1fr]">
-        <Sidebar album={album} downloadScreenshot={downloadScreenshot} />
+        <Sidebar
+          album={album}
+          downloadScreenshot={downloadScreenshot}
+          setCoverDialogVisible={setCoverDialogVisible}
+          onUpdate={updateCustomAlbumState}
+        />
         <Main album={album} />
       </div>
     </>

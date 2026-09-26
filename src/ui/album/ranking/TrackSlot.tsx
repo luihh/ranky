@@ -1,8 +1,10 @@
 import type { Container, Slot } from '@/lib/dnd'
 
 import { useState } from 'react'
+import { useAlbumRankingStore } from '@/stores/albumRankingStore'
 import { useTrackPreviewStore } from '@/stores/trackPreviewStore'
 import TrackPreview from '@/ui/TrackPreview'
+import { X } from 'lucide-react'
 import clsx from 'clsx'
 
 export default function TrackSlot({
@@ -11,25 +13,47 @@ export default function TrackSlot({
   preview,
   index,
   containerId,
+  isCustom,
   onDragStart,
   onDrop
 }: Slot & {
   preview?: string
   index: number
   containerId: Container['id']
+  isCustom: boolean
   onDragStart: () => void
   onDrop: () => void
 }) {
   const [isOver, setIsOver] = useState<boolean>(false)
   const [isDragging, setIsDragging] = useState<boolean>(false)
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [draftTitle, setDraftTitle] = useState(title)
 
   const playingId = useTrackPreviewStore((s) => s.playingId)
   const openId = useTrackPreviewStore((s) => s.openId)
   const setOpenId = useTrackPreviewStore((s) => s.setOpenId)
 
+  const removeTrack = useAlbumRankingStore((s) => s.removeTrack)
+  const renameTrack = useAlbumRankingStore((s) => s.renameTrack)
+
   const isOpen = typeof id === 'number' && openId === id
   const isPlaying = typeof id === 'number' && playingId === id
   const previewOpen = isPlaying || isOpen
+
+  const isPlaceholder = id === 'placeholder'
+  const editable = isCustom && !isPlaceholder
+
+  function commitRename() {
+    setIsEditing(false)
+
+    const trimmed = draftTitle.trim()
+    if (!trimmed || trimmed === title || typeof id !== 'number') {
+      setDraftTitle(title)
+      return
+    }
+
+    renameTrack(id, trimmed)
+  }
 
   return (
     <li className="flex flex-row">
@@ -66,7 +90,7 @@ export default function TrackSlot({
           onDrop()
         }}
         onClick={() => {
-          if (id === 'placeholder' || !preview) return
+          if (id === 'placeholder' || (!isCustom && !preview)) return
           setOpenId(isOpen ? null : id)
         }}
       >
@@ -78,22 +102,62 @@ export default function TrackSlot({
           )}
         >
           <div className="flex items-center w-80 px-4">
-            <span className="flex-1 min-w-0 truncate select-none">{title}</span>
+            {isEditing ? (
+              <input
+                value={draftTitle}
+                onChange={(e) => setDraftTitle(e.target.value)}
+                onBlur={commitRename}
+                onKeyDown={(e) => e.key === 'Enter' && commitRename()}
+                onClick={(e) => e.stopPropagation()}
+                autoFocus
+                className="flex-1 min-w-0 bg-transparent border-none outline-none underline"
+              ></input>
+            ) : (
+              <span
+                className="flex-1 min-w-0 truncate select-none"
+                onDoubleClick={(e) => {
+                  if (!editable) return
+                  e.stopPropagation()
+                  setDraftTitle(title)
+                  setIsEditing(true)
+                }}
+              >
+                {title}
+              </span>
+            )}
 
-            {preview ? (
-              <>
-                <div
-                  className={clsx(
-                    'shrink-0 transition-all duration-200 ease-out flex items-center justify-center',
-                    previewOpen
-                      ? 'w-8 opacity-100'
-                      : 'w-0 opacity-0 group-hover:w-8 group-hover:opacity-100'
-                  )}
+            {preview && (
+              <div
+                className={clsx(
+                  'shrink-0 transition-all duration-200 ease-out flex items-center justify-center',
+                  previewOpen
+                    ? 'w-8 opacity-100'
+                    : 'w-0 opacity-0 group-hover:w-8 group-hover:opacity-100'
+                )}
+              >
+                <TrackPreview id={id} preview={preview} />
+              </div>
+            )}
+
+            {editable && !isEditing && (
+              <div
+                className={clsx(
+                  'shrink-0 transition-all duration-200 ease-out flex items-center justify-center',
+                  previewOpen
+                    ? 'w-8 opacity-100'
+                    : 'w-0 opacity-0 group-hover:w-8 group-hover:opacity-100'
+                )}
+              >
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    if (typeof id === 'number') removeTrack(id)
+                  }}
                 >
-                  <TrackPreview id={id} preview={preview} />
-                </div>
-              </>
-            ) : null}
+                  <X size={16} />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

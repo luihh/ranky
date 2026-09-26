@@ -1,5 +1,5 @@
 import type { Album } from '@/lib/deezer'
-import { type AlbumCollection, AlbumCollectionSchema } from '@/schemas/album'
+import { type AlbumCollection, AlbumCollectionSchema, AlbumSchema } from '@/schemas/album'
 import { useRouter } from '@tanstack/react-router'
 import { SafeStorage } from '@/lib/safeStorage'
 import { Trash, Save, ArchiveRestore } from 'lucide-react'
@@ -9,6 +9,7 @@ import Section from '@/ui/Section'
 export default function DataSection({ album }: { album: Album }) {
   const router = useRouter()
   const albumStore = new SafeStorage<AlbumCollection>('albumRankings', AlbumCollectionSchema)
+  const isCustom = album.id < 0
 
   function deleteRanking() {
     const confirmation = confirm(
@@ -22,6 +23,11 @@ export default function DataSection({ album }: { album: Album }) {
       const { [album.id]: _, ...rest } = prev
       return rest
     })
+
+    if (isCustom) {
+      router.navigate({ to: '/', reloadDocument: true })
+      return
+    }
 
     router.history.go(0)
   }
@@ -55,7 +61,17 @@ export default function DataSection({ album }: { album: Album }) {
 
       try {
         const text = await file.text()
-        const data = JSON.parse(text)
+        const parsed = AlbumSchema.parse(JSON.parse(text))
+
+        if (!isCustom && parsed.id !== String(album.id)) {
+          alert(
+            "This backup doesn't belong to this album. Restoring it here would override a different album's data, so it's been blocked."
+          )
+          input.remove()
+          return
+        }
+
+        const data = isCustom ? { ...parsed, id: String(album.id) } : parsed
 
         albumStore.update((prev) => {
           const collection = prev ?? {}

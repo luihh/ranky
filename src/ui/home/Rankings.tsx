@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { SafeStorage } from '@/lib/safeStorage'
 import { AlbumCollectionSchema, type AlbumCollection } from '@/schemas/album'
 import { useEffect, useState } from 'react'
@@ -7,8 +7,10 @@ import { useGlobalSettingsStore } from '@/stores/globalSettingsStore'
 import { Plus } from 'lucide-react'
 import humanizeDuration from 'humanize-duration'
 import renderRating from '@/utils/renderRating'
+import { createCustomAlbum } from '@/utils/customAlbum'
 
 export default function Rankings() {
+  const navigate = useNavigate()
   const global = useGlobalSettingsStore()
   const [albums, setAlbums] = useState<AlbumCollection | null>({})
   const sortBy = useHomeSortByStore((s) => s.sortBy)
@@ -43,6 +45,11 @@ export default function Rankings() {
       })
     : []
 
+  function handleCreateCustomAlbum() {
+    const id = createCustomAlbum()
+    navigate({ to: '/album/$albumId', params: { albumId: String(id) } })
+  }
+
   // if (!albums || Object.keys(albums).length <= 0) {
   //   return (
   //     <div className="flex flex-col justify-center items-center gap-4 w-full md:w-[90%] p-6 mx-auto">
@@ -62,7 +69,17 @@ export default function Rankings() {
     <>
       <div className="flex flex-col justify-center items-center gap-4 w-full md:w-[90%] p-6 mx-auto">
         <div className="w-full flex items-center justify-between gap-4">
+          {/* <div className="flex items-center gap-3"> */}
           <h1 className="text-3xl font-bold text-center">Albums</h1>
+
+          {/* <button
+              aria-label="Create Custom Album"
+              onClick={handleCreateCustomAlbum}
+              className="all-unset cursor-pointer! border! border-dashed! rounded-2xl! border-border! bg-surface/25! overflow-hidden! transition! hover:bg-surface/15! p-1!"
+            >
+              <Plus className="size-5! opacity-50 transition-transform duration-200 group-hover:-translate-y-3" />
+            </button> */}
+          {/* </div> */}
 
           <select
             value={sortBy}
@@ -117,16 +134,18 @@ export default function Rankings() {
             )
           })}
           <li className="group border border-dashed rounded-2xl bg-surface/25 overflow-hidden transition hover:bg-surface/15">
-            <Link
-              to="/"
-              className="relative flex items-center justify-center h-28 w-full overflow-hidden"
-              draggable={false}
+            <a
+              className="relative flex items-center justify-center h-28 w-full overflow-hidden cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault()
+                handleCreateCustomAlbum()
+              }}
             >
               <Plus className="size-6 opacity-50 transition-transform duration-200 group-hover:-translate-y-3" />
               <span className="absolute text-sm font-medium opacity-0 translate-y-5 transition-all duration-200 group-hover:opacity-70 group-hover:translate-y-2.5">
                 Custom Album
               </span>
-            </Link>
+            </a>
           </li>
         </ul>
       </div>

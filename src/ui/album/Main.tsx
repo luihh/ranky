@@ -12,6 +12,8 @@ export default function AlbumMain({ album }: { album: Album }) {
   const moveItem = useAlbumRankingStore((s) => s.moveItem)
   const setDragged = useAlbumRankingStore((s) => s.setDragged)
 
+  const isCustom = album.id < 0
+
   useEffect(() => {
     init(album)
     return () => useAlbumRankingStore.getState().reset()
@@ -23,6 +25,7 @@ export default function AlbumMain({ album }: { album: Album }) {
         <ContainerComponent
           key={container.id}
           {...container}
+          isCustom={isCustom}
           onDragStart={({ containerId, index }) => setDragged({ containerId, index })}
           onDrop={({ containerId, index }) => {
             if (!dragged) return
