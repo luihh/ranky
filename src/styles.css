@@ -60,3 +60,7 @@ button {
 option {
   color: #000;
 }
+
+.all-unset {
+  all: unset;
+}
