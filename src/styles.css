@@ -19,6 +19,7 @@ body {
 }
 
 * {
+  box-sizing: border-box;
   color: var(--color-text);
   border-color: var(--color-border);
 }
@@ -59,8 +60,4 @@ button {
 
 option {
   color: #000;
-}
-
-.all-unset {
-  all: unset;
 }

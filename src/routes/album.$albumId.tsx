@@ -56,7 +56,8 @@ export const Route = createFileRoute('/album/$albumId')({
   head: ({ loaderData: album }) => {
     if (!album)
       return {
-        meta: [{ title: 'Ranky' }]
+        meta: [{ title: 'Ranky' }],
+        scripts: [{ src: '/dragdroptouch.js?autoload', type: 'module' }]
       }
 
     const title = `${album.title} - ${album.artist.name}`

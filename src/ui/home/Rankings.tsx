@@ -4,15 +4,19 @@ import { AlbumCollectionSchema, type AlbumCollection } from '@/schemas/album'
 import { useEffect, useState } from 'react'
 import { type SortOptions, useHomeSortByStore } from '@/stores/homeSortByStore'
 import { useGlobalSettingsStore } from '@/stores/globalSettingsStore'
+import { createCustomAlbum } from '@/utils/customAlbum'
 import { Plus } from 'lucide-react'
 import humanizeDuration from 'humanize-duration'
+import clsx from 'clsx'
 import renderRating from '@/utils/renderRating'
-import { createCustomAlbum } from '@/utils/customAlbum'
 
 export default function Rankings() {
   const navigate = useNavigate()
   const global = useGlobalSettingsStore()
+
   const [albums, setAlbums] = useState<AlbumCollection | null>({})
+  const [isCreatingAlbum, setIsCreatingAlbum] = useState<boolean>(false)
+
   const sortBy = useHomeSortByStore((s) => s.sortBy)
   const setSortBy = useHomeSortByStore((s) => s.setSortBy)
 
@@ -46,6 +50,9 @@ export default function Rankings() {
     : []
 
   function handleCreateCustomAlbum() {
+    if (isCreatingAlbum) return
+    setIsCreatingAlbum(true)
+
     const id = createCustomAlbum()
     navigate({ to: '/album/$albumId', params: { albumId: String(id) } })
   }
@@ -133,9 +140,15 @@ export default function Rankings() {
               </li>
             )
           })}
-          <li className="group border border-dashed rounded-2xl bg-surface/25 overflow-hidden transition hover:bg-surface/15">
+          <li
+            className={clsx(
+              'group border border-dashed rounded-2xl select-none bg-surface/25 overflow-hidden transition hover:bg-surface/15 active:bg-surface/15',
+              isCreatingAlbum ? 'cursor-default opacity-50' : 'cursor-pointer'
+            )}
+            aria-disabled={isCreatingAlbum}
+          >
             <a
-              className="relative flex items-center justify-center h-28 w-full overflow-hidden cursor-pointer"
+              className="relative flex items-center justify-center h-28 w-full overflow-hidden"
               onClick={(e) => {
                 e.preventDefault()
                 handleCreateCustomAlbum()
