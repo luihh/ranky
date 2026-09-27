@@ -120,7 +120,7 @@ function RouteComponent() {
   }
 
   function updateCustomAlbumState(
-    patch: Partial<{ title: string; cover: string; artistName: string }>
+    patch: Partial<{ title: string; cover: string; artist: string }>
   ) {
     useAlbumRankingStore.getState().updateAlbumInfo(patch)
 
@@ -130,7 +130,7 @@ function RouteComponent() {
         ...prev,
         title: patch.title ?? prev.title,
         cover: patch.cover ?? prev.cover,
-        artist: patch.artistName ? { ...prev.artist, name: patch.artistName } : prev.artist
+        artist: patch.artist ? { ...prev.artist, name: patch.artist } : prev.artist
       }
     })
   }
