@@ -31,6 +31,6 @@ https://github.com/user-attachments/assets/a62a2a89-3e81-492d-88d2-09e49ae77872
 
 ## License
 
-Ranky is licensed under the GNU Affero General Public License v3.0.
+Ranky is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**. See the [LICENSE](LICENSE) file for the full text.
 
-See the [LICENSE](https://github.com/luihh/ranky/blob/master/LICENSE) file for details.
+By contributing to Ranky, you agree that your contributions will be licensed under the AGPL-3.0.
