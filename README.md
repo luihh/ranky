@@ -28,3 +28,9 @@ https://github.com/user-attachments/assets/470a028f-3ff3-4781-b30a-49f77e430962
 ### Settings
 https://github.com/user-attachments/assets/a62a2a89-3e81-492d-88d2-09e49ae77872
 
+
+## License
+
+Ranky is licensed under the GNU Affero General Public License v3.0.
+
+See the [LICENSE](https://github.com/luihh/ranky/blob/master/LICENSE) file for details.
